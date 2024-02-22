@@ -2,6 +2,7 @@ import {Component} from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
 
 import Login from './components/Login'
+import Register from './components/Register'
 import Home from './components/Home'
 import Trending from './components/Trending'
 import Gaming from './components/Gaming'
@@ -71,6 +72,7 @@ class App extends Component {
       >
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute exact path="/trending" component={Trending} />
           <ProtectedRoute exact path="/gaming" component={Gaming} />

@@ -33,10 +33,11 @@ import {
   LabelShowPasswordDark,
 } from './styledComponents'
 
-class Login extends Component {
+class Register extends Component {
   state = {
     showSubmitError: false,
     username: '',
+    email: '',
     password: '',
     errorMsg: '',
     inputType: 'password',
@@ -45,6 +46,14 @@ class Login extends Component {
   onChangeUserName = event => {
     this.setState({
       username: event.target.value,
+      errorMsg: '',
+      showSubmitError: false,
+    })
+  }
+
+  onChangeEmail = event => {
+    this.setState({
+      email: event.target.value,
       errorMsg: '',
       showSubmitError: false,
     })
@@ -70,11 +79,11 @@ class Login extends Component {
     }
   }
 
-  onSubmitSuccess = jwtToken => {
-    Cookies.set('jwt_token', jwtToken, {expires: 30})
-    const {history} = this.props
-    history.replace('/')
-  }
+  //   onSubmitSuccess = jwtToken => {
+  //     Cookies.set('jwt_token', jwtToken, {expires: 30})
+  //     const {history} = this.props
+  //     history.replace('/login')
+  //   }
 
   onSubmitFailure = errorMsg => {
     this.setState({
@@ -85,12 +94,13 @@ class Login extends Component {
 
   Onsubmit = async event => {
     event.preventDefault()
-    const {username, password} = this.state
+    const {username, email, password} = this.state
     const userDetails = {
       username,
+      email,
       password,
     }
-    const url = 'https://users-7c43.onrender.com/login'
+    const url = 'https://users-7c43.onrender.com/users'
     const options = {
       method: 'POST',
       headers: {
@@ -101,7 +111,8 @@ class Login extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token)
+      const {history} = this.props
+      history.replace('/login')
     } else {
       this.onSubmitFailure(data.error)
     }
@@ -113,6 +124,7 @@ class Login extends Component {
       username,
       password,
       errorMsg,
+      email,
       inputType,
     } = this.state
     return (
@@ -135,6 +147,16 @@ class Login extends Component {
                 onChange={this.onChangeUserName}
               />
             </UsernameContainer>
+            <UsernameContainer>
+              <Label htmlFor="EMAIL">EMAIL</Label>
+              <Input
+                id="EMAIL"
+                type="text"
+                placeholder="email"
+                value={email}
+                onChange={this.onChangeEmail}
+              />
+            </UsernameContainer>
             <PasswordContainer>
               <Label htmlFor="PASSWORD">PASSWORD</Label>
               <Input
@@ -155,7 +177,7 @@ class Login extends Component {
                 Show Password
               </LabelShowPassword>
             </CheckboxContainer>
-            <SubmitButton type="submit">Login</SubmitButton>
+            <SubmitButton type="submit">Register</SubmitButton>
             <p style={{textAlign: 'center'}}>
               <Link to="/login" style={{textDecoration: 'none'}}>
                 Already have account?
@@ -174,6 +196,7 @@ class Login extends Component {
       username,
       password,
       errorMsg,
+      email,
       inputType,
     } = this.state
     return (
@@ -196,6 +219,16 @@ class Login extends Component {
                 onChange={this.onChangeUserName}
               />
             </UsernameContainerDark>
+            <UsernameContainerDark>
+              <LabelDark htmlFor="EMAIL">EMAIL</LabelDark>
+              <InputDark
+                id="EMAIL"
+                value={email}
+                type="text"
+                placeholder="email"
+                onChange={this.onChangeEmail}
+              />
+            </UsernameContainerDark>
             <PasswordContainerDark>
               <LabelDark htmlFor="PASSWORD">PASSWORD</LabelDark>
               <InputDark
@@ -216,7 +249,7 @@ class Login extends Component {
                 Show Password
               </LabelShowPasswordDark>
             </CheckboxContainerDark>
-            <SubmitButton type="submit">Login</SubmitButton>
+            <SubmitButton type="submit">Register</SubmitButton>
             <p style={{textAlign: 'center'}}>
               <Link to="/login" style={{textDecoration: 'none'}}>
                 Already have account?
@@ -246,4 +279,4 @@ class Login extends Component {
     return this.renderLoginPage()
   }
 }
-export default Login
+export default Register
